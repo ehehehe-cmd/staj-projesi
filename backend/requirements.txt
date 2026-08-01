@@ -1,0 +1,15 @@
+# Backend
+fastapi
+uvicorn[standard]
+sqlalchemy
+alembic
+psycopg2-binary
+python-dotenv
+pydantic
+
+# RL
+gymnasium
+stable-baselines3
+torch
+numpy
+matplotlib

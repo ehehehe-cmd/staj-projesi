@@ -1,0 +1,11 @@
+docker compose up -d proje içine gidip çalıştır.
+
+docker ps çalışıyo mu kontrol.
+
+docker start staj_postgres container durmuşsa çalıştır.
+
+docker exec -it staj_postgres psql -U enes -d slab_takvimleme bağlantıyı test etme.
+
+docker compose stop durdurur.
+
+docker restart staj_postgres baştan başlatır.

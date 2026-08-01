@@ -1,0 +1,28 @@
+create table  slab (
+slab_id serial primary key,
+kalinlik decimal not null,
+genislik decimal not null,
+sicaklik decimal not null,
+sertlik decimal not null,
+kalite_sinifi varchar not null,
+teslim_tarihi date not null,
+durum varchar not null,
+olusturma_tarihi timestamp not null default now(),
+constraint shk_slab_durum check (durum in ('depoda', 'sarj_oluyor', 'haddelemede', 'tamamlandi'))
+);
+
+
+create table takvimleme (
+takvimleme_id serial primary key,
+olusturma_tarihi timestamp not null default now(),
+aktif_mi boolean not null default true
+);
+
+
+CREATE TABLE takvimleme_detay (
+    takvimleme_detay_id SERIAL PRIMARY KEY,
+    takvimleme_id INT NOT NULL REFERENCES takvimleme(takvimleme_id),
+    slab_id INT NOT NULL REFERENCES slab(slab_id),
+    sira_no INT NOT NULL,
+    CONSTRAINT uq_takvimleme_slab_sira UNIQUE (takvimleme_id, sira_no)
+);
