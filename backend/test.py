@@ -8,7 +8,7 @@ from app.services.simulasyon_servisi_DB import simulasyon_DB_calistir
 db = SessionLocal()
 
 # depo_servisi deneme 
-#depo_slab_ekle()
+depo_slab_ekle(db)
 
 # ortam_servisi deneme
 '''
@@ -36,7 +36,7 @@ print("Satır 20:", state[20])        # sıfır (henüz seçim yok)
 '''
 
 # Simülasyon denemeleri
-simulasyon_DB_calistir(db, 5)
+# simulasyon_DB_calistir(db, 5)
 
 
 db.close()

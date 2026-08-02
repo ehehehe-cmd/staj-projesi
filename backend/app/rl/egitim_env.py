@@ -1,6 +1,6 @@
 import numpy as np
 import gymnasium as gym
-from app.rl.egitim_ortam_olusturucu import egitim_state_olustur, egitim_slab_vektor
+from app.rl.egitim_ortam_olusturucu import egitim_slab_uret, egitim_Sslabstate_to_normalizasyon
 from gymnasium import spaces
 
 class SlabTakvimiEnv(gym.Env):
@@ -44,9 +44,10 @@ class SlabTakvimiEnv(gym.Env):
     def reset(self, seed = None, options = None):
         super().reset(seed=seed)
         self.current_step = 0
-
+        # ANCHOR BURDA KALDIK! ÖNEMLİ YER!! 
+        # TODO: Asıl SlabState verisi 
         # TODO: Satate üreten fonksiyon
-        self.state = self._generate_initial_state(son_secilen=None)
+        self.state, self.slabstate = self._generate_initial_state(son_secilen=None)
 
         info = {"action_mask": self._get_action_mask()}
         return self.state, info
@@ -64,28 +65,35 @@ class SlabTakvimiEnv(gym.Env):
             return self.state, reward, terminated, truncated, info
 
         secilen_slab = self.state[action].copy()
+        secilen_slab_gercek = self.slabstate[action].copy()
+
+        onceki_slab_gercek = self.slabstate[20].copy()
         onceki_slab = self.state[20].copy()
 
         # Ödül Modülü -> dışardan verilmişse onu çağır, verilmemişse override ı kullan
         reward = self._compute_reward(secilen_slab, onceki_slab)
 
         # Secilen slabı havuzdan çıkart, yerine yenisini koy
-        self.state[action] = self._get_replacement_slab()
+        self.state[action], self.slabstate[action] = self._get_replacement_slab()
 
         # 21. satırı seçilen slab ile güncelle
         self.state[20] = secilen_slab
+        self.slabstate[20] = secilen_slab_gercek
 
-        # Simülasyon modülü -> Her adımda veya velirli aralıklarla durumu ilerlet
+        # Simülasyon modülü -> Her adımda veya belirli aralıklarla durumu ilerlet
         # TODO ilerletme sürecini planla
-        # (sıcaklık düşüü, durum güncellemesi gibi)
+        # (sıcaklık düşüşü, durum güncellemesi gibi)
         if self.simulate_fn is not None:
-            self.state = self.simulate_fn(self.state, self.current_step)
+            self.slabstate = self.simulate_fn(50, self.slabstate)
+            self.state = egitim_Sslabstate_to_normalizasyon(self.slabstate)
 
         self.current_step += 1
         terminated = self._is_episode_done()
         truncated = self.current_step >= self.max_steps
 
         info = {"action_mask": self._get_action_mask()}
+        print(self.slabstate[1])
+        #print(self.state)
 
         return self.state, reward, terminated, truncated, info
 
@@ -94,7 +102,7 @@ class SlabTakvimiEnv(gym.Env):
     #***************************
 
     # 20 boyutlu boolean maske. Ture = seçilebilir, False = seçilemez
-     # Geçiş ksııtlarını bir önceki slaba göre kontrol et
+    # Geçiş ksııtlarını bir önceki slaba göre kontrol et
     def _get_action_mask(self) -> np.ndarray:
         onceki_slab = self.state[20]
         mask = np.ones(20, dtype=bool)
@@ -115,16 +123,18 @@ class SlabTakvimiEnv(gym.Env):
     # TODO İLERİDE FONKSİYONLAR EKLENİCEK
     #***********************
 
+
     def _generate_initial_state(self, son_secilen) -> np.ndarray:
         if self.state_fn is not None:
             return self.state_fn(son_secilen)
 
         # Fonksiyon verilmediyse alt sınıftan bu metodu overridelasın
         raise NotImplementedError("state_fn verilmedi ve _generate_initial_state override edilmedi")
-
+    # ANCHOR buray tamamen düznle
     def _get_replacement_slab(self) -> np.ndarray:
         if self.slab_fn is not None:
-            return self.slab_fn()
+            slab = egitim_slab_uret()
+            return self.slab_fn(slab), slab
 
         raise NotImplementedError("slab_fn verilmedi ve _get_replacement_slab override edilmedi")
         

@@ -1,5 +1,6 @@
 import numpy as np
 from app.rl.egitim_ortam_olusturucu import egitim_state_olustur, egitim_slab_vektor
+from app.rl.egitim_simulasyon import egitim_simulasyon_calistir
 from app.rl.egitim_env import SlabTakvimiEnv
 
 
@@ -20,7 +21,7 @@ def dummy_slab_fn():
 env = SlabTakvimiEnv(
     max_steps=10,
     reward_fn=dummy_reward_fn,
-    simulate_fn=None,          # ileride simulate_fn=senin_fonksiyonun olarak eklenecek
+    simulate_fn=egitim_simulasyon_calistir,          # ileride simulate_fn=senin_fonksiyonun olarak eklenecek
     state_fn=egitim_state_olustur,   # kendi state_fn'inle değiştir
     slab_fn=egitim_slab_vektor,     # kendi slab_fn'inle değiştir
 )
@@ -38,7 +39,8 @@ for adim in range(10):
 
     # Şu an tüm aksiyonlar geçerli (mask hepsi True), rastgele seçelim
     gecerli_aksiyonlar = np.where(mask)[0]
-    action = int(np.random.choice(gecerli_aksiyonlar))
+    #action = int(np.random.choice(gecerli_aksiyonlar))
+    action = 4
 
     obs, reward, terminated, truncated, info = env.step(action)
     toplam_odul += reward

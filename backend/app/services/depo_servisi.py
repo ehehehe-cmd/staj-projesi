@@ -11,7 +11,7 @@ import random
 #Aralıklara göre slab'ı üreten fonksiyon 
 def depo_slab_üret():
     sicaklik = random.randrange(min_sicaklik_cel, max_sicaklik_cel)
-
+    print(sicaklik)
     ilerleme = (max_sicaklik_cel - sicaklik)/(max_sicaklik_cel - ortam_sicakligi_cel)
     ilerleme = max(0.0, min(1.0,ilerleme))
 
