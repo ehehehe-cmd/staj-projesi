@@ -9,7 +9,7 @@ class SlabTakvimiEnv(gym.Env):
 
     # İçeride kullanıcağımız fonksiyonları içeriye koy
     def __init__(self,
-            max_steps: int = 100,
+            max_steps: int = 10000,
             reward_fn = None,
             simulate_fn = None,
             state_fn = None,
@@ -92,8 +92,11 @@ class SlabTakvimiEnv(gym.Env):
         truncated = self.current_step >= self.max_steps
 
         info = {"action_mask": self._get_action_mask()}
+        print("****************slablstate****************")
         print(self.slabstate[1])
-        #print(self.state)
+        print("****************slab*******************")
+        print(self.state[1])
+        print("****************************************")
 
         return self.state, reward, terminated, truncated, info
 

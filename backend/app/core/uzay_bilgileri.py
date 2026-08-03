@@ -1,4 +1,4 @@
 havuz_boyutu = 20
-ozellik_sayisi = 5  # kalinlik, genislik, tarih, sicaklik, sertlik
+ozellik_sayisi = 7  # kalinlik, genislik, tarih, sicaklik, uzunluk,zorluk ,kalan gün
 
 

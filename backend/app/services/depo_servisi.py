@@ -11,19 +11,20 @@ import random
 #Aralıklara göre slab'ı üreten fonksiyon 
 def depo_slab_üret():
     sicaklik = random.randrange(min_sicaklik_cel, max_sicaklik_cel)
-    print(sicaklik)
-    ilerleme = (max_sicaklik_cel - sicaklik)/(max_sicaklik_cel - ortam_sicakligi_cel)
-    ilerleme = max(0.0, min(1.0,ilerleme))
 
-    sertlik = min_sertlik + (max_sertlik - min_sertlik) * ilerleme
+    giris = random.randrange(min_genislik_mm, max_genislik_mm)
+    cikis = giris + (random.randrange(-1* genislik_sapma, genislik_sapma))
+    zorluk = (genislik_sapma + (cikis - giris)) / 2 * genislik_sapma # %lik değer alır
     
     yeni_slab = Slab(
-    kalinlik=random.randrange(min_kalinlik_mm, max_kalinlik_mm),
-    genislik=random.randrange(min_genislik_mm, max_genislik_mm),
-    sertlik=sertlik,
+    cikis_kalinlik=random.randrange(min_kalinlik_mm, max_kalinlik_mm),
+    giris_genislik=giris,
+    cikis_genislik=cikis,
+    sicaklik=sicaklik,
+    cikis_uzunluk=random.randrange(cikis_uzunluk_min, cikis_uzunluk_max),
+    zorluk = zorluk,
     kalite_sinifi=random.choice(kalite_sinifi_list),
     teslim_tarihi=rastgele_tarih(min_gun, max_gun),
-    sicaklik=sicaklik,
     durum="depoda",
     )
 

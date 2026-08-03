@@ -30,10 +30,12 @@ def ortam_normalize(deger:float, min_deger:float, max_deger:float) -> float:
 def ortam_slab_vektoru(slab: Slab) -> list[float]:
     kalan_gun = (slab.teslim_tarihi - date.today()).days
     return [
-        ortam_normalize(slab.kalinlik, min_kalinlik_mm, max_kalinlik_mm),
-        ortam_normalize(slab.genislik, min_genislik_mm, max_genislik_mm),
-        ortam_normalize(slab.sertlik, min_sertlik, max_sertlik),
+        ortam_normalize(slab.cikis_kalinlik, min_kalinlik_mm, max_kalinlik_mm),
+        ortam_normalize(slab.giris_genislik, min_genislik_mm, max_genislik_mm),
+        ortam_normalize(slab.cikis_genislik, slab.giris_genislik - 10, slab.giris_genislik + 10),
         ortam_normalize(slab.sicaklik, ortam_sicakligi_cel, max_sicaklik_cel),
+        ortam_normalize(slab.cikis_uzunluk, cikis_uzunluk_min, cikis_uzunluk_max),
+        ortam_normalize(slab.zorluk, 0, 100),
         ortam_normalize(kalan_gun, 0, max_gun)
     ]
 

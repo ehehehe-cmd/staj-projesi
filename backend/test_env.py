@@ -9,17 +9,12 @@ from app.rl.egitim_env import SlabTakvimiEnv
 def dummy_reward_fn(secilen_slab, onceki_slab, state):
     return float(np.random.uniform(-1, 1))
 
-def dummy_state_fn():
-    return np.random.uniform(0, 100, size=(21, 5)).astype(np.float32)
-
-def dummy_slab_fn():
-    return np.random.uniform(0, 100, size=(5,)).astype(np.float32)
 
 
 # --- Env'i kur ---
 
 env = SlabTakvimiEnv(
-    max_steps=10,
+    max_steps=100,
     reward_fn=dummy_reward_fn,
     simulate_fn=egitim_simulasyon_calistir,          # ileride simulate_fn=senin_fonksiyonun olarak eklenecek
     state_fn=egitim_state_olustur,   # kendi state_fn'inle değiştir

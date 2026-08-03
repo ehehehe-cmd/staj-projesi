@@ -12,15 +12,17 @@ from app.core.simulasyon_core import SlabState
 def egitim_slab_uret() -> SlabState:
     sicaklik = random.randrange(min_sicaklik_cel, max_sicaklik_cel)
 
-    ilerleme = (max_sicaklik_cel - sicaklik)/(max_sicaklik_cel - ortam_sicakligi_cel)
-    ilerleme = max(0.0, min(1.0,ilerleme))
+    giris = random.randrange(min_genislik_mm, max_genislik_mm)
+    cikis = giris + (random.randrange(-1* genislik_sapma, genislik_sapma))
+    zorluk = (genislik_sapma + (cikis - giris)) / (2 * genislik_sapma) # %lik değer alır
     
-    sertlik = min_sertlik + (max_sertlik - min_sertlik) * ilerleme
     return {
-        "kalinlik": random.uniform(min_kalinlik_mm, max_kalinlik_mm),
-        "genislik": random.uniform(min_genislik_mm, max_genislik_mm),
-        "sertlik": sertlik,
+        "cikis_kalinlik": random.uniform(min_kalinlik_mm, max_kalinlik_mm),
+        "giris_genislik": giris,
+        "cikis_genislik": cikis,
         "sicaklik": sicaklik,
+        "cikis_uzunluk": random.randrange(cikis_uzunluk_min, cikis_uzunluk_max),
+        "zorluk": zorluk,
         "kalan_gun": random.uniform(0, max_gun),
     }
 
@@ -29,11 +31,14 @@ def egitim_slab_uret() -> SlabState:
 # Eğitimde simülasyona Slab verisi sokmam lazım normalize olmamış halde
 # Ortam servisindeki normalize etme foksiyonu ile birlikte vektör döndürür
 def egitim_slab_vektor(slab: SlabState) -> SlabState:
+    
     return [
-        ortam_normalize(slab["kalinlik"], min_kalinlik_mm, max_kalinlik_mm),
-        ortam_normalize(slab["genislik"], min_genislik_mm, max_genislik_mm),
-        ortam_normalize(slab["sertlik"], min_sertlik, max_sertlik),
-        ortam_normalize(slab["sicaklik"], min_sicaklik_cel, max_sicaklik_cel),
+        ortam_normalize(slab["cikis_kalinlik"], min_kalinlik_mm, max_kalinlik_mm),
+        ortam_normalize(slab["giris_genislik"], min_genislik_mm, max_genislik_mm),
+        ortam_normalize(slab["cikis_genislik"], slab["cikis_genislik"] - 10, slab["cikis_genislik"] + 10), #TODO buraya bi bak
+        ortam_normalize(slab["sicaklik"], ortam_sicakligi_cel, max_sicaklik_cel),
+        ortam_normalize(slab["cikis_uzunluk"], cikis_uzunluk_min, cikis_uzunluk_max),
+        ortam_normalize(slab["zorluk"], 0, 100),
         ortam_normalize(slab["kalan_gun"], 0, max_gun),
         ]
 
@@ -52,7 +57,9 @@ def egitim_state_olustur(son_secilen: dict | None) -> np.ndarray:
     havuz = egitim_havuzu_uret()
     state = np.zeros((havuz_boyutu + 1, ozellik_sayisi), dtype=np.float32)
     normal_slab_verisi: list[dict | None] = [None] * (havuz_boyutu + 1)
-    normal_slab_verisi[20] = [0,0,0,0,0]
+    normal_slab_verisi[20] = {"cikis_kalinlik":0,"giris_genislik":0,"cikis_genislik":0,"sicaklik":0,"cikis_uzunluk":0,"zorluk":0,"kalan_gun":0}
+    #print(state)
+    #print(normal_slab_verisi)
 
     for i, slab in enumerate(havuz):
         state[i] = egitim_slab_vektor(slab)
