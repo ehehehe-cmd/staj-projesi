@@ -13,5 +13,5 @@ def egitim_simulasyon_calistir(dakika:int, slablar: list[SlabState]):
             slab["kalan_gun"] -= (dakika/1440)
         else:
             slab["kalan_gun"] = 0.01
-    print(slablar[1]["kalan_gun"])
+    #print(slablar[1]["kalan_gun"])
     return slablar

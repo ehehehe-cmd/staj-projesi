@@ -1,15 +1,20 @@
 create table  slab (
 slab_id serial primary key,
-kalinlik decimal not null,
-genislik decimal not null,
+cikis_kalinligi decimal not null,
+giris_genisligi decimal not null,
+cikis_genisligi decimal not null,
 sicaklik decimal not null,
-sertlik decimal not null,
+cikis_uzunluk decimal not null,
+zorluk decimal not null,
 kalite_sinifi varchar not null,
 teslim_tarihi date not null,
 durum varchar not null,
 olusturma_tarihi timestamp not null default now(),
 constraint shk_slab_durum check (durum in ('depoda', 'sarj_oluyor', 'haddelemede', 'tamamlandi'))
 );
+
+sertlik decimal not null,
+
 
 
 create table takvimleme (

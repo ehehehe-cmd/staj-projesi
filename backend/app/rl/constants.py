@@ -1,0 +1,25 @@
+IDX_CIKIS_KALINLIK = 0
+IDX_GIRIS_GENISLIK = 1
+IDX_CIKIS_GENISLIK = 2
+IDX_SICAKLIK       = 3
+IDX_CIKIS_UZUNLUK  = 4
+IDX_ZORLUK         = 5
+IDX_KALAN_GUN      = 6
+
+KEY_CIKIS_KALINLIK = "cikis_kalinlik"
+KEY_GIRIS_GENISLIK = "giris_genislik"
+KEY_CIKIS_GENISLIK = "cikis_genislik"
+KEY_SICAKLIK       = "sicaklik"
+KEY_CIKIS_UZUNLUK  = "cikis_uzunluk"
+KEY_ZORLUK         = "zorluk"
+KEY_KALAN_GUN      = "kalan_gun"
+
+GENISLIK_LIMIT = 750.0   # mm
+KALINLIK_LIMIT = 15.0    # mm
+HEDEF_KM = 80.0
+
+W_GENISLIK = 1.0
+W_KALINLIK = 0.5
+W_SICAKLIK = 0.2
+W_ZORLUK   = 0.3
+W_GUN      = 0.1
