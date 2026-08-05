@@ -3,6 +3,7 @@ from app.rl.egitim_ortam_olusturucu import egitim_state_olustur, egitim_slab_vek
 from app.rl.egitim_simulasyon import egitim_simulasyon_calistir
 from app.rl.egitim_env import SlabTakvimiEnv
 from app.rl.constants import *
+from app.core.uzay_bilgileri import *
 
 
 # ============================================================
@@ -25,7 +26,7 @@ print("=" * 60)
 print("TEST 1: Şekil ve ilk mask kontrolü")
 print("=" * 60)
 print("İlk state şekli:", obs.shape)                       # (21, 7) olmalı
-assert obs.shape == (21, 7), f"Beklenen (21,7), gelen {obs.shape}"
+assert obs.shape == (havuz_boyutu + 1, ozellik_sayisi), f"Beklenen (21,7), gelen {obs.shape}"
 
 print("İlk action mask:", info["action_mask"])
 assert info["action_mask"].all(), "İlk adımda kısıt olmamalı (ilk_adim=True bekleniyor)"
@@ -47,8 +48,8 @@ obs, reward, terminated, truncated, info = env.step(action)
 mask = info["action_mask"]
 
 onceki_slab_gercek = env.slabstate[20]
-manuel_mask = np.ones(20, dtype=bool)
-for i in range(20):
+manuel_mask = np.ones(havuz_boyutu, dtype=bool)
+for i in range(havuz_boyutu):
     aday = env.slabstate[i]
     genislik_farki = onceki_slab_gercek[KEY_GIRIS_GENISLIK] - aday[KEY_GIRIS_GENISLIK]
     kalinlik_farki = onceki_slab_gercek[KEY_CIKIS_KALINLIK] - aday[KEY_CIKIS_KALINLIK]

@@ -17,6 +17,7 @@ KEY_KALAN_GUN      = "kalan_gun"
 GENISLIK_LIMIT = 750.0   # mm
 KALINLIK_LIMIT = 15.0    # mm
 HEDEF_KM = 80.0
+ZORLUK_ESIK = 0.7 
 
 W_GENISLIK = 1.0
 W_KALINLIK = 0.5
